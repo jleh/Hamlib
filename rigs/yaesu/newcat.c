@@ -4691,7 +4691,7 @@ int newcat_get_level(RIG *rig, vfo_t vfo, setting_t level, value_t *val)
     case RIG_LEVEL_SLOPE_LOW:
         if (is_ft991)
         {
-            SNPRINTF(priv->cmd_str, sizeof(priv->cmd_str), "EX102;");
+            SNPRINTF(priv->cmd_str, sizeof(priv->cmd_str), "EX102%c", cat_term);
         }
         else
         {
@@ -5466,12 +5466,17 @@ int newcat_get_level(RIG *rig, vfo_t vfo, setting_t level, value_t *val)
         break;
 
     case RIG_LEVEL_SLOPE_LOW:
-        rig_debug(RIG_DEBUG_TRACE, "SLOPE LEVEL: %s", retlvl);
-        if (atoi(retlvl) == 0)
-        {
-            return 0;
+        if (is_ft991) {
+            if (strcmp(retlvl, "00") == 0)
+            {
+                val->i = 0;
+            }
+            else
+            {
+                val->i = (atoi(retlvl) - 1) * 50 + 100;            
+            }
         }
-        val->i = atoi(retlvl) - 1 * 50 + 100;
+       
         break;
 
     default:
