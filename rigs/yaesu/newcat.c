@@ -5466,6 +5466,7 @@ int newcat_get_level(RIG *rig, vfo_t vfo, setting_t level, value_t *val)
         break;
 
     case RIG_LEVEL_SLOPE_LOW:
+        rig_debug(RIG_DEBUG_TRACE, "SLOPE LEVEL: %s", retlvl);
         if (atoi(retlvl) == 0)
         {
             return 0;
