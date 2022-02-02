@@ -4688,6 +4688,18 @@ int newcat_get_level(RIG *rig, vfo_t vfo, setting_t level, value_t *val)
         SNPRINTF(priv->cmd_str, sizeof(priv->cmd_str), "NL0%c", cat_term);
         break;
 
+    case RIG_LEVEL_SLOPE_LOW:
+        if (is_ft991)
+        {
+            SNPRINTF(priv->cmd_str, sizeof(priv->cmd_str), "EX102;");
+        }
+        else
+        {
+            RETURNFUNC(-RIG_ENAVAIL);
+        }
+        
+        break;
+
     /*
      * Read only levels
      */
@@ -5451,6 +5463,14 @@ int newcat_get_level(RIG *rig, vfo_t vfo, setting_t level, value_t *val)
 
     case RIG_LEVEL_NB:
         val->f = (float)(atoi(retlvl) / 10.);
+        break;
+
+    case RIG_LEVEL_SLOPE_LOW:
+        if (atoi(retlvl) == 0)
+        {
+            return 0;
+        }
+        val->i = atoi(retlvl) - 1 * 50 + 100;
         break;
 
     default:
