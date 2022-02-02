@@ -4413,6 +4413,31 @@ int newcat_set_level(RIG *rig, vfo_t vfo, setting_t level, value_t val)
 
         break;
 
+    case RIG_LEVEL_SLOPE_LOW:
+        if (is_ft991)
+        {
+            int slope;
+
+            if (val.i < 100)
+            {
+                slope = 0;
+            }
+            else if (val.i == 100)
+            {
+                slope = 1;
+            }
+            else if (val.i > 100 && val.i < 1000)
+            {
+                slope = (val.i - 100) / 50;
+            }
+            else
+            {
+                slope = 19;
+            }
+
+            SNPRINTF(priv->cmd_str, sizeof(priv->cmd_str), "EX102%02d%c", slope, cat_term);
+        }
+
     default:
         RETURNFUNC(-RIG_EINVAL);
     }
