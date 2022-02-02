@@ -4437,6 +4437,7 @@ int newcat_set_level(RIG *rig, vfo_t vfo, setting_t level, value_t val)
 
             SNPRINTF(priv->cmd_str, sizeof(priv->cmd_str), "EX102%02d%c", slope, cat_term);
         }
+        break;
 
     default:
         RETURNFUNC(-RIG_EINVAL);
